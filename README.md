@@ -1,4 +1,4 @@
-## Learning GO
+## Aprendizado em GO
 
 -> Oferece performance
 <br>
@@ -24,15 +24,18 @@
 
 ## Iniciar um projeto em GO
 
-go mod init github.com/xxxxx/xxxxx
+```bash
+$ go mod init github.com/xxxxx/xxxxx
+```
 
-<br>
 <br>
 
 ## Realizar download de pacotes
 
-go mod tidy
-<br>
+```bash
+$ go mod tidy
+```
+
 <br>
 
 ## Utilização
