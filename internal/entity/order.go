@@ -1,12 +1,15 @@
 package entity
 
-import "errors"
+import (
+	"errors"
+)
 
 type Order struct {
 	Id         string
 	Price      float64
 	Tax        float64
 	FinalPrice float64
+	Discount   float64
 }
 
 func NewOrder(id string, price float64, tax float64) (*Order, error) {
@@ -16,7 +19,7 @@ func NewOrder(id string, price float64, tax float64) (*Order, error) {
 		Tax:   tax,
 	}
 
-	err := order.validate()
+	err := order.Validate()
 
 	if err != nil {
 		return nil, err
@@ -25,17 +28,17 @@ func NewOrder(id string, price float64, tax float64) (*Order, error) {
 	return order, nil
 }
 
-func (order *Order) validate() error {
+func (order *Order) Validate() error {
 	if order.Id == "" {
-		return errors.New("Id is required")
+		return errors.New("id is required")
 	}
 
 	if order.Price <= 0 {
-		return errors.New("Invalid price")
+		return errors.New("invalid price")
 	}
 
 	if order.Tax <= 0 {
-		return errors.New("Invalid tax")
+		return errors.New("invalid tax")
 	}
 
 	return nil
@@ -44,11 +47,20 @@ func (order *Order) validate() error {
 func (order *Order) CalculateFinalPrice() error {
 	order.FinalPrice = order.Price + order.Tax
 
-	err := order.validate()
+	err := order.Validate()
 
 	if err != nil {
 		return err
 	}
 
 	return nil
+}
+
+func (order *Order) CalculateFinalPriceWithDiscount(discount float64) {
+	finalPrice := order.Price + order.Tax
+
+	finalPriceWithDiscount := (finalPrice * discount) / 100
+
+	order.Discount = finalPriceWithDiscount
+
 }

@@ -6,29 +6,31 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func testIfItGetsAnErrorIfIdIsBlank(testing *testing.T) {
+func TestIfItGetsAnErrorIfIdIsBlank(testing *testing.T) {
 	order := Order{}
 
-	assert.Error(testing, order.validate(), "invalid id")
+	assert.Error(testing, order.Validate(), "invalid id")
 }
 
-func testIfItGetsAnErrorIfPriceIsBlank(testing *testing.T) {
+func TestIfItGetsAnErrorIfPriceIsBlank(testing *testing.T) {
 	order := Order{Id: "123"}
 
-	assert.Error(testing, order.validate(), "invalid price")
+	assert.Error(testing, order.Validate(), "invalid price")
 }
 
-func testIfItGetsAnErrorIfTaxIsBlank(testing *testing.T) {
+func TestIfItGetsAnErrorIfTaxIsBlank(testing *testing.T) {
 	order := Order{Id: "123", Price: 10.0}
 
-	assert.Error(testing, order.validate(), "invalid tax")
+	assert.Error(testing, order.Validate(), "invalid tax")
 }
 
-func testWithAllValidParams(testing *testing.T) {
+func TestWithAllValidParams(testing *testing.T) {
 	order := Order{Id: "123", Price: 10.0, Tax: 1.0}
-	assert.Error(testing, order.validate())
+	assert.NoError(testing, order.Validate())
 	assert.Equal(testing, 10.0, order.Price)
 	assert.Equal(testing, 1.0, order.Tax)
 	order.CalculateFinalPrice()
 	assert.Equal(testing, 11.0, order.FinalPrice)
+	order.CalculateFinalPriceWithDiscount(10.0)
+	assert.Equal(testing, 1.1, order.Discount)
 }
