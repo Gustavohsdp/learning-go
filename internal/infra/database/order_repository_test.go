@@ -40,7 +40,8 @@ func (suite *OrderRepositoryTestSuite) TestSavingOrder() {
 	suite.NoError(err)
 
 	var orderResult entity.Order
-	err = suite.db.QueryRow("select id, price, tax, final_price from orders where id = ?",
+
+	err = suite.db.QueryRow("select id, price, tax, finalPrice from orders where id = ?",
 		order.Id).Scan(&orderResult.Id, &orderResult.Price, &orderResult.Tax, &orderResult.FinalPrice)
 
 	suite.NoError(err)

@@ -7,17 +7,17 @@ import (
 )
 
 type OrderRepository struct {
-	db *sql.DB
+	Db *sql.DB
 }
 
 func NewOrderRepository(db *sql.DB) *OrderRepository {
 	return &OrderRepository{
-		db: db,
+		Db: db,
 	}
 }
 
 func (repository *OrderRepository) Save(order *entity.Order) error {
-	_, err := repository.db.Exec("insert into orders (id, price, tax, finalPrice) values(?, ?, ?, ?)",
+	_, err := repository.Db.Exec("insert into orders (id, price, tax, finalPrice) values(?, ?, ?, ?)",
 		order.Id, order.Price, order.Tax, order.FinalPrice)
 
 	if err != nil {
@@ -27,9 +27,9 @@ func (repository *OrderRepository) Save(order *entity.Order) error {
 	return nil
 }
 
-func (repository *OrderRepository) getTotal() (int, error) {
+func (repository *OrderRepository) GetTotal() (int, error) {
 	var total int
-	err := repository.db.QueryRow("select count(*) from orders").Scan(&total)
+	err := repository.Db.QueryRow("select count(*) from orders").Scan(&total)
 
 	if err != nil {
 		return 0, err
